@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?15d67fa79ffa3a3c4688ab6b1fc185ea";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+    </script>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="土狗名片生成器 - 一键生成你的专属土味名片，让你的名片充满个性与趣味。支持自定义头像、个人信息、技能展示、收款方式等多种功能。">
+    <meta name="keywords" content="土狗名片,名片生成器,个性名片,趣味名片,土味名片,在线制作,免费生成">
+    <meta name="author" content="BeilunYang">
+    <meta property="og:title" content="土狗名片生成器">
+    <meta property="og:description" content="一键生成你的专属土味名片，让你的名片充满个性与趣味">
+    <meta property="og:image" content="favicon.png">
+    <meta property="og:url" content="https://tudog.bitibiti.com">
+    <title>土狗名片生成器 - 免费生成你的专属土味名片</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="canonical" href="https://tudog.bitibiti.com">
+    <script src="html2canvas.min.js"></script>
+    <style>
+        body {
+            background-color: #ff0000;
+            font-family: "MS Gothic", "SimSun", monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .page {
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .retro-page {
+            background-color: #ff0000;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+            height: calc(100% - 80px); /* 减去导出按钮的高度 */
+            overflow: hidden;
+        }
+        
+        .card-container {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            /* 自定义滚动条样式 */
+            scrollbar-width: thin;
+            scrollbar-color: #ff00ff #ffff99;
+        }
+        
+        /* Webkit浏览器的滚动条样式 */
+        .card-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .card-container::-webkit-scrollbar-track {
+            background: #ffff99;
+            border: 1px solid #ff00ff;
+        }
+        
+        .card-container::-webkit-scrollbar-thumb {
+            background: #ff00ff;
+            border: 1px solid #0000ff;
+        }
+        
+        .card {
+            width: 400px;
+            background: #ffff99;
+            border: 3px double blue;
+            padding: 8px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .header {
+            border-bottom: 2px dashed #000;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #ff00ff;
+            float: left;
+            margin-right: 10px;
+        }
+        .info {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        marquee {
+            background: #00ff00;
+            color: #ff0000;
+        }
+        
+        .export-buttons {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .retro-export {
+            background: linear-gradient(45deg, #ff0000, #ff6b6b);
+            color: white;
+            border: 3px double yellow;
+            text-shadow: 2px 2px 0 #000;
+            font-family: "MS Gothic", "SimSun", monospace;
+        }
+        
+        .settings-panel {
+            width: 300px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            /* 自定义滚动条样式 */
+            scrollbar-width: thin;
+            scrollbar-color: #ff00ff #ffff99;
+        }
+        
+        /* Webkit浏览器的滚动条样式 */
+        .settings-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .settings-panel::-webkit-scrollbar-track {
+            background: #ffff99;
+            border: 1px solid #ff00ff;
+        }
+        
+        .settings-panel::-webkit-scrollbar-thumb {
+            background: #ff00ff;
+            border: 1px solid #0000ff;
+        }
+        
+        .settings-section {
+            background: #ffff99;
+            border: 3px double #ff00ff;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: "MS Gothic", "SimSun", monospace;
+        }
+        
+        .settings-title {
+            text-align: center;
+            color: #ff0000;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            background: #00ff00;
+            padding: 5px;
+            border: 1px solid blue;
+        }
+        
+        .input-group {
+            margin-bottom: 10px;
+            background: #ffffff;
+            padding: 8px;
+            border: 1px dashed #ff0000;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #0000ff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 5px;
+            border: 2px solid #ff00ff;
+            background: #ffffcc;
+            font-family: "MS Gothic", "SimSun", monospace;
+        }
+        
+        .input-group textarea {
+            height: 60px;
+            resize: vertical;
+        }
+        
+        .image-upload {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid #ff00ff;
+        }
+        
+        .upload-label {
+            background: #00ff00;
+            color: #ff0000;
+            border: 2px solid #0000ff;
+            font-weight: bold;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .business-content {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .business-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 48px;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 0.4);
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: "Impact", "Arial Black", sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 0;
+        }
+        
+        .sad-quote {
+            position: absolute;
+            font-size: 12px;
+            color: #ff00ff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            transform: rotate(-15deg);
+            background: rgba(255, 255, 153, 0.9);
+            padding: 5px;
+            border: 1px dashed #0000ff;
+            width: 100px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .emoji-decoration {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .skill-section {
+            background: #000000;
+            border: 3px double #ff00ff;
+            padding: 8px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-title {
+            text-align: center;
+            color: #0000ff;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-decoration: underline;
+            background-color: #000000;
+            padding: 5px;
+            border: 2px solid #ff0000;
+            position: relative;
+            z-index: 1;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        
+        .skill-title:before,
+        .skill-title:after {
+            content: "★";
+            color: #ff0000;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .skill-title:before {
+            left: 10px;
+        }
+        
+        .skill-title:after {
+            right: 10px;
+        }
+        
+        .skill-item {
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            background: #000000;
+            border: 1px dashed #ff0000;
+            padding: 5px 5px 5px 25px;
+            color: #ff0000;
+        }
+        
+        .skill-item:before {
+            content: "★";
+            color: #ff0000;
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .skill-item:after {
+            content: "666";
+            color: #ff0000;
+            font-size: 10px;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .skill-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 72px;
+            color: rgba(255, 0, 0, 0.2);
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: "Impact", "Arial Black", sans-serif;
+            z-index: 0;
+        }
+        
+        .qr-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-watermark {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%) rotate(-30deg);
+            font-size: 24px;
+            color: rgba(255, 0, 0, 0.2);
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: "MS Gothic", "SimSun", monospace;
+            z-index: 0;
+            width: 150px;
+            text-align: center;
+        }
+        
+        .card-footer {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 5px;
+            border-top: 1px dashed #ff0000;
+            color: #0000ff;
+            font-size: 12px;
+            font-family: "Courier New", monospace;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 #ffff00;
+        }
+        
+        .page-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            color: #ffff00;
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            text-shadow: 1px 1px 0 #000000;
+        }
+        
+        .page-footer a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .page-footer a:hover {
+            text-decoration: underline;
+            color: #ff00ff;
+        }
+        
+        .page-title {
+            text-align: center;
+            color: #ffff00;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #000000;
+            font-family: "MS Gothic", "SimSun", monospace;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            padding: 0 30px;
+        }
+        
+        .page-title:before,
+        .page-title:after {
+            content: "★";
+            color: #00ffff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .page-title:before {
+            left: 0;
+        }
+        
+        .page-title:after {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="page retro-page">
+        <div class="page-title">土狗名片生成器</div>
+        <div class="container">
+            <div class="card-container">
+            <div class="card">
+                    <!-- 左上角空白处装饰 -->
+                    <img class="emoji-decoration" src="/emoji1.gif" 
+                         style="bottom: 20px; left: 20px; transform: rotate(-8deg);" alt="">
+                    
+                    <!-- 右上角空白处装饰 -->
+                    <img class="emoji-decoration" src="/emoji2.gif"
+                         style="top: 20px; right: 20px; transform: rotate(8deg);" alt="">
+                    
+                    <!-- 右下角空白处装饰 -->
+                    <img class="emoji-decoration" src="/emoji3.gif"
+                         style="bottom: 80px; right: 20px; transform: rotate(-5deg);" alt="">
+                    
+                    <div class="sad-quote" style="top: 70px; right: 30px;">
+                        <span class="sad-text"></span>
+                    </div>
+                    
+                    <div style="background: #00ff00; color: #ff0000; padding: 5px; text-align: center;" class="welcome">
+                </div>
+                <div class="header">
+                        <img class="avatar avatar-image" src="/doge.png" alt="doge头像">
+                    <div class="info">
+                            <span>♪</span> 姓名：<span class="name"></span><br>
+                            <span>♫</span> 性别：<span class="gender"></span><br>
+                            <span>♪</span> 年龄：<span class="age"></span><br>
+                            <span>♫</span> 身高：<span class="height"></span><br>
+                            <span>♪</span> 体重：<span class="weight"></span><br>
+                            <span>♫</span> 联系方式：<span class="contact-phone"></span>
+                        </div>
+                    </div>
+                    <div class="skill-section">
+                        <div class="skill-title"></div>
+                        <div class="skill-background">NIUBILITY</div>
+                        <div class="skill-list">
+                    </div>
+                </div>
+                <div style="clear: both; border-top: 2px dashed #000; padding-top: 10px; margin-top: 10px;">
+                    <div style="border: 1px solid red; height: 50px; display: flex; align-items: center; justify-content: center;">
+                            <span style="color: red; font-weight: bold;" class="notice"></span>
+                    </div>
+                    
+                    <div style="margin: 15px 0; border: 3px double #00ff00; padding: 10px; background: #ffff00;">
+                            <div style="text-align: center; color: #ff0000; font-weight: bold; text-decoration: underline; margin-bottom: 10px;" class="business-title">
+                        </div>
+                            <div style="background: #ffffff; padding: 8px; border: 1px solid #ff00ff;" class="business-content">
+                                <div class="business-watermark"></div>
+                                <div class="business-line"><span style="color: #0000ff;">✦</span> <span class="business-line1"></span></div>
+                                <div class="business-line"><span style="color: #0000ff;">✦</span> <span class="business-line2"></span></div>
+                                <div class="business-line"><span style="color: #0000ff;">✦</span> <span class="business-line3"></span></div>
+                                <div class="business-line"><span style="color: #0000ff;">✦</span> <span class="business-line4"></span></div>
+                            <div style="text-align: right; color: #ff0000; font-size: 10px;">
+                                    —— <span class="business-footer"></span> ——
+                                </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px;">
+                                <span style="background: #ff0000; color: #ffff00; padding: 2px 5px;" class="business-slogan">
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #ff99cc; padding: 5px; margin: 10px 0; border: 2px dotted blue;">
+                            <span>💰</span> <span class="wallet-title"></span>：<br>
+                            <div style="word-break: break-all; background: #ffffff; padding: 5px; font-family: monospace;" class="wallet-address">
+                            </div>
+                    </div>
+                    <div style="text-align: center;">
+                            <div class="qr-section">
+                                <div class="qr-watermark"></div>
+                                <p style="color: red; text-decoration: underline;" class="qr-title"></p>
+                                <img class="qr-code" src="alipay.jpg" 
+                                     alt="收款码" 
+                                     style="width: 150px; height: 150px; border: 3px solid #ff00ff;">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            tudog.bitibiti.com 土狗名片生成器
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-panel">
+                <div class="settings-section">
+                    <div class="settings-title">★★ 基本信息设置 ★★</div>
+                    <div class="image-upload">
+                        <img class="image-preview" id="avatar-preview" 
+                             src="/doge.png" 
+                             onclick="document.getElementById('avatar-input').click()">
+                        <br>
+                        <label class="upload-label" for="avatar-input">
+                            ★ 更换头像 ★
+                        </label>
+                        <input type="file" id="avatar-input" accept="image/*" 
+                               onchange="handleImageChange(this, 'avatar')">
+                    </div>
+                    <div class="input-group">
+                        <label>名字</label>
+                        <input type="text" id="name-input" value="张三">
+                    </div>
+                    <div class="input-group">
+                        <label>性别</label>
+                        <input type="text" id="gender-input" value="纯爷们">
+                    </div>
+                    <div class="input-group">
+                        <label>欢迎语</label>
+                        <input type="text" id="welcome-input" value="没事别瞎BB，有事先转账">
+                    </div>
+                    <div class="input-group">
+                        <label>年龄</label>
+                        <input type="text" id="age-input" value="25岁">
+                    </div>
+                    <div class="input-group">
+                        <label>身高</label>
+                        <input type="text" id="height-input" value="175cm">
+                    </div>
+                    <div class="input-group">
+                        <label>体重</label>
+                        <input type="text" id="weight-input" value="65kg">
+                    </div>
+                    <div class="input-group">
+                        <label>技能标题</label>
+                        <input type="text" id="skill-title-input" value="个人技能">
+                    </div>
+                    <div class="input-group">
+                        <label>个人技能（每行一个）</label>
+                        <textarea id="skills-input" rows="4">精通Ctrl+C和Ctrl+V
+熟练掌握面向百度编程，从不手写代码
+熟悉面向ChatGPT编程，从不动脑思考
+擅长面向GitHub抄代码，从不自己实现
+精通面向Stack Overflow开发，从不看文档</textarea>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">★★ 业务设置 ★★</div>
+                    <div class="input-group">
+                        <label>背景水印</label>
+                        <input type="text" id="watermark-input" value="FBI WARNING">
+                    </div>
+                    <div class="input-group">
+                        <label>重要提示</label>
+                        <input type="text" id="notice-input" value="穷逼绕道，闲聊勿扰">
+                    </div>
+                    <div class="input-group">
+                        <label>业务标题</label>
+                        <input type="text" id="business-title-input" value="高端业务（没钱勿扰）">
+                    </div>
+                    <div class="input-group">
+                        <label>业务内容1</label>
+                        <input type="text" id="business-line1-input" value="网站开发（10W起步） / APP开发（20W起） / 小程序（5W起）">
+                    </div>
+                    <div class="input-group">
+                        <label>业务内容2</label>
+                        <input type="text" id="business-line2-input" value="技术咨询（888/次） / 技术支持（2888/月） / 远程救援（666/次）">
+                    </div>
+                    <div class="input-group">
+                        <label>业务内容3</label>
+                        <input type="text" id="business-line3-input" value="网站托管（随便给钱） / 域名注册（加价50%） / 服务器租用（成本价3倍）">
+                    </div>
+                    <div class="input-group">
+                        <label>业务内容4</label>
+                        <input type="text" id="business-line4-input" value="广告位招租（天价） / 广告投放（只做大客户） / 流量变现（躺赚）">
+                    </div>
+                    <div class="input-group">
+                        <label>业务底部备注</label>
+                        <input type="text" id="business-footer-input" value="不讲价，不议价，白嫖党勿扰">
+                    </div>
+                    <div class="input-group">
+                        <label>业务底部标语</label>
+                        <input type="text" id="business-slogan-input" value="大哥说啥就是啥 | 爱要不要 | 价高质优">
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">★★ 联系方式设置 ★★</div>
+                    <div class="input-group">
+                        <label>联系方式</label>
+                        <input type="text" id="phone-input" value="123-4567-8900">
+                    </div>
+                    <div class="input-group">
+                        <label>收款地址标题</label>
+                        <input type="text" id="wallet-title-input" value="EVM 打钱专用地址（是贵族就用贵族链）">
+                    </div>
+                    <div class="input-group">
+                        <label>收款地址</label>
+                        <input type="text" id="wallet-input" value="0x1234567890abcdef1234567890abcdef12345678">
+                    </div>
+                    <div class="input-group">
+                        <label>收款码标题</label>
+                        <input type="text" id="qr-title-input" value="扫码打钱开启会话（支付宝--最好的聊天工具）">
+                    </div>
+                    <div class="input-group">
+                        <label>收款码水印</label>
+                        <input type="text" id="qr-watermark-input" value="锟斤拷烫烫烫">
+                    </div>
+                    <div class="image-upload">
+                        <img class="image-preview" id="qr-preview" 
+                             src="https://img-mom.bitibiti.workers.dev/img/AgACAgUAAxkBAAITbWerl3e6rXhmBq-0EQKbtXIVvDN7AAJ3wTEbZ-BYVSMOnMxDcebOAQADAgADeQADNgQ" 
+                             onclick="document.getElementById('qr-input').click()">
+                        <br>
+                        <label class="upload-label" for="qr-input">
+                            ★ 更换收款码 ★
+                        </label>
+                        <input type="file" id="qr-input" accept="image/*" 
+                               onchange="handleImageChange(this, 'qr')">
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">★★ 装饰设置 ★★</div>
+                    <div class="input-group">
+                        <label>表情包1</label>
+                        <div class="image-upload">
+                            <img class="image-preview" id="emoji1-preview" 
+                                 src="/emoji1.gif" 
+                                 onclick="document.getElementById('emoji1-input').click()">
+                            <br>
+                            <label class="upload-label" for="emoji1-input">
+                                ★ 更换表情1 ★
+                            </label>
+                            <input type="file" id="emoji1-input" accept="image/*" 
+                                   onchange="handleImageChange(this, 'emoji1')">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>表情包2</label>
+                        <div class="image-upload">
+                            <img class="image-preview" id="emoji2-preview" 
+                                 src="/emoji2.gif" 
+                                 onclick="document.getElementById('emoji2-input').click()">
+                            <br>
+                            <label class="upload-label" for="emoji2-input">
+                                ★ 更换表情2 ★
+                            </label>
+                            <input type="file" id="emoji2-input" accept="image/*" 
+                                   onchange="handleImageChange(this, 'emoji2')">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>表情包3</label>
+                        <div class="image-upload">
+                            <img class="image-preview" id="emoji3-preview" 
+                                 src="/emoji3.gif" 
+                                 onclick="document.getElementById('emoji3-input').click()">
+                            <br>
+                            <label class="upload-label" for="emoji3-input">
+                                ★ 更换表情3 ★
+                            </label>
+                            <input type="file" id="emoji3-input" accept="image/*" 
+                                   onchange="handleImageChange(this, 'emoji3')">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>伤感文案</label>
+                        <textarea id="sad-quote-input" rows="4">★·.·´¯`·.·★
+じ☆ve 乱世メ
+浅唱ゞ离歌℡
+╰☆╮喂,妳欠我一个未来╭☆╯</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="export-buttons">
+            <div style="text-align: center;">
+                <button class="export-button retro-export" onclick="exportCard('retro')">导出土狗名片</button>
+                <div style="font-size: 12px; color: #ff6b6b; margin-top: 5px; text-shadow: 1px 1px 0 #000;">
+                    ——专门发给白嫖党或小丑🤡——
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">
+            Github: <a href="https://github.com/beilunyang" target="_blank">BeilunYang</a>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_TEXTS = {
+            // 基本信息
+            name: "BeilunYang",
+            gender: "A man, Real man",
+            welcome: "没事别BB，有事先转账",
+            age: "18岁",
+            height: "180cm",
+            weight: "80kg",
+            
+            // 技能相关
+            skillTitle: "个人技能",
+            skills: `专业前端切图仔
+Are you Ok 级别高水平英语
+精通Ctrl+C和Ctrl+V
+熟悉面向ChatGPT编程，从不动脑思考
+擅长面向GitHub抄代码，从不自己实现
+精通面向Stack Overflow开发，从不看文档`,
+            
+            // 业务相关
+            watermark: "FBI WARNING",
+            notice: "穷逼绕道，闲聊勿扰",
+            businessTitle: "高端业务（没钱勿扰）",
+            businessLine1: "网站开发（10W起步） / APP开发（20W起） / 小程序（5W起）",
+            businessLine2: "技术咨询（888/次） / 技术支持（2888/月） / 远程救援（666/次）",
+            businessLine3: "网站托管（随便给钱） / 域名注册（加价50%） / 服务器租用（成本价3倍）",
+            businessLine4: "广告位招租（天价） / 广告投放（只做大客户） / 流量变现（躺赚）",
+            businessFooter: "不讲价，不议价，白嫖党勿扰",
+            businessSlogan: "大哥说啥就是啥 | 爱要不要 | 价高质优",
+            
+            // 联系方式
+            phone: "下面有支付宝收款码",
+            walletTitle: "EVM 打钱专用地址（是贵族就用贵族链）",
+            wallet: "0x1661c763b8352eea56f3d885b4a02568bdd17c56",
+            qrTitle: "扫码打钱开启会话（支付宝--最好的聊天工具）",
+            qrWatermark: "锟斤拷烫烫烫",
+            
+            // 装饰文案
+            sadQuote: `★·.·´¯\`·.·★
+じ☆ve 乱世メ
+浅唱ゞ离歌℡
+╰☆╮喂,妳欠我一个未来╭☆╯`
+        };
+
+        // 页面加载完成后立即更新卡片内容
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置所有输入框的默认值
+            Object.entries(DEFAULT_TEXTS).forEach(([key, value]) => {
+                const input = document.getElementById(`${key}-input`);
+                if (input) {
+                    input.value = value;
+                }
+            });
+            
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateCard);
+            });
+            
+            // 初始化卡片内容
+            updateCard();
+        });
+        
+        function handleImageChange(input, type) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // 更新预览图
+                    document.getElementById(`${type}-preview`).src = e.target.result;
+                    
+                    // 更新名片中的图片
+                    let targetImage;
+                    if (type === 'avatar') {
+                        targetImage = document.querySelector('.avatar-image');
+                    } else if (type === 'qr') {
+                        targetImage = document.querySelector('.qr-code');
+                    } else if (type.startsWith('emoji')) {
+                        const index = parseInt(type.slice(5)) - 1;
+                        targetImage = document.querySelectorAll('.emoji-decoration')[index];
+                    }
+                    if (targetImage) {
+                        targetImage.src = e.target.result;
+                        // 显示表情包
+                        if (type.startsWith('emoji')) {
+                            targetImage.style.display = 'block';
+                        }
+                    }
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function updateCard() {
+            // 更新名字
+            const nameInput = document.getElementById('name-input').value;
+            document.querySelector('.name').textContent = nameInput || '无名氏';
+            
+            // 更新性别
+            const genderInput = document.getElementById('gender-input').value;
+            const genderEl = document.querySelector('.gender').parentElement;
+            if (genderInput) {
+                document.querySelector('.gender').textContent = genderInput;
+                genderEl.style.display = 'inline';
+            } else {
+                genderEl.style.display = 'none';
+            }
+            
+            // 更新欢迎语
+            const welcomeInput = document.getElementById('welcome-input').value;
+            const welcomeEl = document.querySelector('.welcome');
+            if (welcomeInput) {
+                welcomeEl.textContent = `☆★☆★ ${welcomeInput} ★☆★☆`;
+                welcomeEl.style.display = 'block';
+            } else {
+                welcomeEl.style.display = 'none';
+            }
+            
+            // 更新年龄
+            const ageInput = document.getElementById('age-input').value;
+            const ageEl = document.querySelector('.age').parentElement;
+            if (ageInput) {
+                document.querySelector('.age').textContent = ageInput;
+                ageEl.style.display = 'inline';
+            } else {
+                ageEl.style.display = 'none';
+            }
+            
+            // 更新身高
+            const heightInput = document.getElementById('height-input').value;
+            const heightEl = document.querySelector('.height').parentElement;
+            if (heightInput) {
+                document.querySelector('.height').textContent = heightInput;
+                heightEl.style.display = 'inline';
+            } else {
+                heightEl.style.display = 'none';
+            }
+            
+            // 更新体重
+            const weightInput = document.getElementById('weight-input').value;
+            const weightEl = document.querySelector('.weight').parentElement;
+            if (weightInput) {
+                document.querySelector('.weight').textContent = weightInput;
+                weightEl.style.display = 'inline';
+            } else {
+                weightEl.style.display = 'none';
+            }
+            
+            // 更新联系方式
+            const phoneInput = document.getElementById('phone-input').value;
+            const phoneEl = document.querySelector('.contact-phone').parentElement;
+            if (phoneInput) {
+                document.querySelector('.contact-phone').textContent = phoneInput;
+                phoneEl.style.display = 'inline';
+            } else {
+                phoneEl.style.display = 'none';
+            }
+            
+            // 更新重要提示
+            const noticeInput = document.getElementById('notice-input').value;
+            const noticeEl = document.querySelector('.notice').parentElement;
+            if (noticeInput) {
+                document.querySelector('.notice').textContent = `★★★ 重要提示：${noticeInput} ★★★`;
+                noticeEl.style.display = 'flex';
+            } else {
+                noticeEl.style.display = 'none';
+            }
+            
+            // 更新业务标题和内容区域
+            const businessContainer = document.querySelector('.business-content').parentElement;
+            const hasBusinessContent = document.getElementById('business-line1-input').value ||
+                                     document.getElementById('business-line2-input').value ||
+                                     document.getElementById('business-line3-input').value ||
+                                     document.getElementById('business-line4-input').value;
+            
+            if (hasBusinessContent) {
+                businessContainer.style.display = 'block';
+                // 更新背景水印
+                const watermarkInput = document.getElementById('watermark-input').value;
+                document.querySelector('.business-watermark').textContent = watermarkInput;
+                
+                // 更新业务标题
+                const titleInput = document.getElementById('business-title-input').value;
+                document.querySelector('.business-title').textContent = 
+                    titleInput ? `★★★ ${titleInput} ★★★` : '';
+                
+                // 更新各行业务内容
+                ['1','2','3','4'].forEach(num => {
+                    const lineInput = document.getElementById(`business-line${num}-input`).value;
+                    const lineEl = document.querySelector(`.business-line${num}`).parentElement;
+                    if (lineInput) {
+                        document.querySelector(`.business-line${num}`).textContent = lineInput;
+                        lineEl.style.display = 'block';
+                    } else {
+                        lineEl.style.display = 'none';
+                    }
+                });
+            } else {
+                businessContainer.style.display = 'none';
+            }
+            
+            // 更新业务底部备注
+            const footerInput = document.getElementById('business-footer-input').value;
+            const footerEl = document.querySelector('.business-footer').parentElement;
+            if (footerInput) {
+                document.querySelector('.business-footer').textContent = footerInput;
+                footerEl.style.display = 'block';
+            } else {
+                footerEl.style.display = 'none';
+            }
+            
+            // 更新业务底部标语
+            const sloganInput = document.getElementById('business-slogan-input').value;
+            const sloganEl = document.querySelector('.business-slogan').parentElement;
+            if (sloganInput) {
+                document.querySelector('.business-slogan').textContent = sloganInput;
+                sloganEl.style.display = 'block';
+            } else {
+                sloganEl.style.display = 'none';
+            }
+            
+            // 更新收款地址
+            const walletInput = document.getElementById('wallet-input').value;
+            const walletContainer = document.querySelector('.wallet-address').parentElement.parentElement;
+            if (walletInput) {
+                document.querySelector('.wallet-address').textContent = walletInput;
+                // 更新收款地址标题
+                const walletTitleInput = document.getElementById('wallet-title-input').value;
+                document.querySelector('.wallet-title').textContent = walletTitleInput;
+                // 更新收款码标题
+                const qrTitleInput = document.getElementById('qr-title-input').value;
+                document.querySelector('.qr-title').textContent = `👇 ${qrTitleInput} 👇`;
+                // 更新收款码水印
+                const qrWatermarkInput = document.getElementById('qr-watermark-input').value;
+                document.querySelector('.qr-watermark').textContent = qrWatermarkInput;
+                walletContainer.style.display = 'block';
+            } else {
+                walletContainer.style.display = 'none';
+            }
+            
+            // 更新伤感文案
+            const sadQuoteInput = document.getElementById('sad-quote-input').value;
+            const sadQuoteEl = document.querySelector('.sad-text');
+            if (sadQuoteInput) {
+                sadQuoteEl.innerHTML = sadQuoteInput.replace(/\n/g, '<br>');
+                sadQuoteEl.parentElement.style.display = 'block';
+            } else {
+                sadQuoteEl.parentElement.style.display = 'none';
+            }
+            
+            // 检查表情包预览图的src是否为默认值或空，如果是则隐藏对应的表情包
+            document.querySelectorAll('.emoji-decoration').forEach((emoji, index) => {
+                const previewSrc = document.getElementById(`emoji${index + 1}-preview`).src;
+                if (previewSrc.endsWith('/emoji' + (index + 1) + '.gif') || !previewSrc) {
+                    emoji.style.display = 'none';
+                } else {
+                    emoji.style.display = 'block';
+                }
+            });
+            
+            // 更新个人技能
+            const skillTitleInput = document.getElementById('skill-title-input').value;
+            const skillsInput = document.getElementById('skills-input').value;
+            const skillList = document.querySelector('.skill-list');
+            const skillSection = document.querySelector('.skill-section');
+            
+            if (skillsInput) {
+                const skills = skillsInput.split('\n').filter(skill => skill.trim());
+                if (skills.length > 0) {
+                    skillList.innerHTML = skills
+                        .map(skill => `<div class="skill-item">${skill.trim()}</div>`)
+                        .join('');
+                    document.querySelector('.skill-title').textContent = skillTitleInput || '个人技能';
+                    skillSection.style.display = 'block';
+                } else {
+                    skillSection.style.display = 'none';
+                }
+            } else {
+                skillSection.style.display = 'none';
+            }
+        }
+        
+        function exportCard(type) {
+            const element = document.querySelector('.card');
+            
+            html2canvas(element, {
+                scale: 2,
+                backgroundColor: '#ff0000',
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = '土狗名片.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('导出失败:', err);
+                alert('导出失败，请重试');
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -445,15 +445,15 @@
             <div class="card-container">
             <div class="card">
                     <!-- 左上角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji1.gif" 
+                    <img class="emoji-decoration" src="/emoji1.png" 
                          style="bottom: 20px; left: 20px; transform: rotate(-8deg);" alt="">
                     
                     <!-- 右上角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji2.gif"
+                    <img class="emoji-decoration" src="/emoji2.png"
                          style="top: 20px; right: 20px; transform: rotate(8deg);" alt="">
                     
                     <!-- 右下角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji3.gif"
+                    <img class="emoji-decoration" src="/emoji3.png"
                          style="bottom: 80px; right: 20px; transform: rotate(-5deg);" alt="">
                     
                     <div class="sad-quote" style="top: 70px; right: 30px;">
@@ -463,7 +463,7 @@
                     <div style="background: #00ff00; color: #ff0000; padding: 5px; text-align: center;" class="welcome">
                 </div>
                 <div class="header">
-                        <img class="avatar avatar-image" src="/doge.png" alt="doge头像">
+                    <img class="avatar avatar-image" src="doge.png" alt="doge头像">
                     <div class="info">
                             <span>♪</span> 姓名：<span class="name"></span><br>
                             <span>♫</span> 性别：<span class="gender"></span><br>
@@ -528,7 +528,7 @@
                     <div class="settings-title">★★ 基本信息设置 ★★</div>
                     <div class="image-upload">
                         <img class="image-preview" id="avatar-preview" 
-                             src="/doge.png" 
+                             src="doge.png" 
                              onclick="document.getElementById('avatar-input').click()">
                         <br>
                         <label class="upload-label" for="avatar-input">
@@ -656,7 +656,7 @@
                         <label>表情包1</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji1-preview" 
-                                 src="/emoji1.gif" 
+                                 src="/emoji1.png" 
                                  onclick="document.getElementById('emoji1-input').click()">
                             <br>
                             <label class="upload-label" for="emoji1-input">
@@ -670,7 +670,7 @@
                         <label>表情包2</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji2-preview" 
-                                 src="/emoji2.gif" 
+                                 src="/emoji2.png" 
                                  onclick="document.getElementById('emoji2-input').click()">
                             <br>
                             <label class="upload-label" for="emoji2-input">
@@ -684,7 +684,7 @@
                         <label>表情包3</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji3-preview" 
-                                 src="/emoji3.gif" 
+                                src="/emoji3.png" 
                                  onclick="document.getElementById('emoji3-input').click()">
                             <br>
                             <label class="upload-label" for="emoji3-input">
@@ -971,7 +971,7 @@ Are you Ok 级别高水平英语
             // 检查表情包预览图的src是否为默认值或空，如果是则隐藏对应的表情包
             document.querySelectorAll('.emoji-decoration').forEach((emoji, index) => {
                 const previewSrc = document.getElementById(`emoji${index + 1}-preview`).src;
-                if (previewSrc.endsWith('/emoji' + (index + 1) + '.gif') || !previewSrc) {
+                if (previewSrc.endsWith('/emoji' + (index + 1) + '.png') || !previewSrc) {
                     emoji.style.display = 'none';
                 } else {
                     emoji.style.display = 'block';

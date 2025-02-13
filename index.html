@@ -27,7 +27,6 @@
     <script src="html2canvas.min.js"></script>
     <style>
         body {
-            background-color: #ff0000;
             font-family: "MS Gothic", "SimSun", monospace;
             margin: 0;
             padding: 0;
@@ -436,24 +435,116 @@
         .page-title:after {
             right: 0;
         }
+        
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #00ff00;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 5px 10px;
+            font-family: "MS Gothic", "SimSun", monospace;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #000000;
+        }
+        
+        /* 阴间主题样式 */
+        .dark-theme {
+            background-color: #000000 !important;
+        }
+        
+        .dark-theme .card {
+            background: #000000 !important;
+            border: 2px solid #39FF14 !important;
+            color: #00ff00 !important;
+        }
+        
+        .dark-theme .skill-section {
+            border-color: #39FF14 !important;
+            background: #000000 !important;
+        }
+        
+        .dark-theme .skill-item {
+            border-color: #39FF14 !important;
+            color: #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        .dark-theme .skill-title {
+            color: #39FF14 !important;
+            border-color: #39FF14 !important;
+            text-shadow: 0 0 10px #39FF14 !important;
+        }
+        
+        .dark-theme .info {
+            color: #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        .dark-theme .business-content {
+            background: #000000 !important;
+            border-color: #39FF14 !important;
+        }
+        
+        .dark-theme .business-line span {
+            color: #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        .dark-theme .business-watermark {
+            color: rgba(255, 255, 0, 0.4) !important;
+        }
+        
+        .dark-theme .welcome {
+            background: #000000 !important;
+            color: #39FF14 !important;
+            border: 1px solid #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        .dark-theme .qr-watermark {
+            color: rgba(255, 0, 0, 0.4) !important;
+        }
+        
+        .dark-theme .page-title {
+            color: #39FF14 !important;
+            text-shadow: 0 0 10px #39FF14 !important;
+        }
+        
+        .dark-theme .card-footer {
+            color: #39FF14 !important;
+            border-color: #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        .dark-theme .theme-switch {
+            background: #000000 !important;
+            border-color: #39FF14 !important;
+            color: #39FF14 !important;
+            text-shadow: 0 0 5px #39FF14 !important;
+        }
     </style>
 </head>
 <body>
     <div class="page retro-page">
+        <button class="theme-switch" onclick="toggleTheme()">切换阴间主题</button>
         <div class="page-title">土狗名片生成器</div>
         <div class="container">
             <div class="card-container">
             <div class="card">
                     <!-- 左上角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji1.png" 
+                    <img class="emoji-decoration" src="emoji1.png" 
                          style="bottom: 20px; left: 20px; transform: rotate(-8deg);" alt="">
                     
                     <!-- 右上角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji2.png"
+                    <img class="emoji-decoration" src="emoji2.png"
                          style="top: 20px; right: 20px; transform: rotate(8deg);" alt="">
                     
                     <!-- 右下角空白处装饰 -->
-                    <img class="emoji-decoration" src="/emoji3.png"
+                    <img class="emoji-decoration" src="emoji3.png"
                          style="bottom: 80px; right: 20px; transform: rotate(-5deg);" alt="">
                     
                     <div class="sad-quote" style="top: 70px; right: 30px;">
@@ -627,7 +718,7 @@
                     </div>
                     <div class="input-group">
                         <label>收款地址</label>
-                        <input type="text" id="wallet-input" value="0x1234567890abcdef1234567890abcdef12345678">
+                        <input type="text" id="wallet-input" value="0x1661c763b8352eea56f3d885b4a02568bdd17c56">
                     </div>
                     <div class="input-group">
                         <label>收款码标题</label>
@@ -639,7 +730,7 @@
                     </div>
                     <div class="image-upload">
                         <img class="image-preview" id="qr-preview" 
-                             src="https://img-mom.bitibiti.workers.dev/img/AgACAgUAAxkBAAITbWerl3e6rXhmBq-0EQKbtXIVvDN7AAJ3wTEbZ-BYVSMOnMxDcebOAQADAgADeQADNgQ" 
+                             src="alipay.jpg" 
                              onclick="document.getElementById('qr-input').click()">
                         <br>
                         <label class="upload-label" for="qr-input">
@@ -656,7 +747,7 @@
                         <label>表情包1</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji1-preview" 
-                                 src="/emoji1.png" 
+                                 src="emoji1.png" 
                                  onclick="document.getElementById('emoji1-input').click()">
                             <br>
                             <label class="upload-label" for="emoji1-input">
@@ -670,7 +761,7 @@
                         <label>表情包2</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji2-preview" 
-                                 src="/emoji2.png" 
+                                 src="emoji2.png" 
                                  onclick="document.getElementById('emoji2-input').click()">
                             <br>
                             <label class="upload-label" for="emoji2-input">
@@ -684,7 +775,7 @@
                         <label>表情包3</label>
                         <div class="image-upload">
                             <img class="image-preview" id="emoji3-preview" 
-                                src="/emoji3.png" 
+                                src="emoji3.png" 
                                  onclick="document.getElementById('emoji3-input').click()">
                             <br>
                             <label class="upload-label" for="emoji3-input">
@@ -971,7 +1062,7 @@ Are you Ok 级别高水平英语
             // 检查表情包预览图的src是否为默认值或空，如果是则隐藏对应的表情包
             document.querySelectorAll('.emoji-decoration').forEach((emoji, index) => {
                 const previewSrc = document.getElementById(`emoji${index + 1}-preview`).src;
-                if (previewSrc.endsWith('/emoji' + (index + 1) + '.png') || !previewSrc) {
+                if (!previewSrc) {
                     emoji.style.display = 'none';
                 } else {
                     emoji.style.display = 'block';
@@ -1017,6 +1108,16 @@ Are you Ok 级别高水平英语
                 console.error('导出失败:', err);
                 alert('导出失败，请重试');
             });
+        }
+        
+        function toggleTheme() {
+            document.querySelector('.page').classList.toggle('dark-theme');
+            const btn = document.querySelector('.theme-switch');
+            if (document.querySelector('.page').classList.contains('dark-theme')) {
+                btn.textContent = '切换喜庆主题';
+            } else {
+                btn.textContent = '切换阴间主题';
+            }
         }
     </script>
 </body>

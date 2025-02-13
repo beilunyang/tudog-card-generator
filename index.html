@@ -556,12 +556,31 @@
                 <div class="header">
                     <img class="avatar avatar-image" src="doge.png" alt="doge头像">
                     <div class="info">
+                        <div id="name">
                             <span>♪</span> 姓名：<span class="name"></span><br>
+                        </div>
+                        
+                        <div id="position">
+                            <span>♫</span> 职位：<span class="position"></span><br>
+                        </div>
+                        <div id="company">
+                            <span>♪</span> 公司：<span class="company"></span><br>
+                        </div>
+                        <div id="gender">
                             <span>♫</span> 性别：<span class="gender"></span><br>
+                        </div>
+                        <div id="age">
                             <span>♪</span> 年龄：<span class="age"></span><br>
+                        </div>
+                        <div id="height">
                             <span>♫</span> 身高：<span class="height"></span><br>
+                        </div>
+                        <div id="weight">
                             <span>♪</span> 体重：<span class="weight"></span><br>
+                        </div>
+                        <div id="contact">
                             <span>♫</span> 联系方式：<span class="contact-phone"></span>
+                        </div>
                         </div>
                     </div>
                     <div class="skill-section">
@@ -629,8 +648,16 @@
                                onchange="handleImageChange(this, 'avatar')">
                     </div>
                     <div class="input-group">
-                        <label>名字</label>
-                        <input type="text" id="name-input" value="张三">
+                        <label>姓名</label>
+                        <input type="text" id="name-input" value="BeilunYang">
+                    </div>
+                    <div class="input-group">
+                        <label>职位</label>
+                        <input type="text" id="position-input" value="首席CV工程师">
+                    </div>
+                    <div class="input-group">
+                        <label>公司</label>
+                        <input type="text" id="company-input" value="CV科技有限公司">
                     </div>
                     <div class="input-group">
                         <label>性别</label>
@@ -812,6 +839,8 @@
         const DEFAULT_TEXTS = {
             // 基本信息
             name: "BeilunYang",
+            position: "首席CV工程师",
+            company: "CV科技有限公司",
             gender: "A man, Real man",
             welcome: "没事别BB，有事先转账",
             age: "18岁",
@@ -907,6 +936,26 @@ Are you Ok 级别高水平英语
             const nameInput = document.getElementById('name-input').value;
             document.querySelector('.name').textContent = nameInput || '无名氏';
             
+            // 更新职位
+            const positionInput = document.getElementById('position-input').value;
+            const positionEl = document.querySelector('.position').parentElement;
+            if (positionInput) {
+                document.querySelector('.position').textContent = positionInput;
+                positionEl.style.display = 'inline';
+            } else {
+                positionEl.style.display = 'none';
+            }
+            
+            // 更新公司
+            const companyInput = document.getElementById('company-input').value;
+            const companyEl = document.querySelector('.company').parentElement;
+            if (companyInput) {
+                document.querySelector('.company').textContent = companyInput;
+                companyEl.style.display = 'inline';
+            } else {
+                companyEl.style.display = 'none';
+            }
+            
             // 更新性别
             const genderInput = document.getElementById('gender-input').value;
             const genderEl = document.querySelector('.gender').parentElement;
@@ -960,11 +1009,11 @@ Are you Ok 级别高水平英语
             // 更新联系方式
             const phoneInput = document.getElementById('phone-input').value;
             const phoneEl = document.querySelector('.contact-phone').parentElement;
+            document.querySelector('.contact-phone').textContent = phoneInput || '';
             if (phoneInput) {
-                document.querySelector('.contact-phone').textContent = phoneInput;
-                phoneEl.style.display = 'inline';
+                phoneEl.style.display = 'block'
             } else {
-                phoneEl.style.display = 'none';
+                phoneEl.style.display = 'none'
             }
             
             // 更新重要提示

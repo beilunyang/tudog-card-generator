@@ -19,10 +19,14 @@
 👉 [https://tudog.bitibiti.com](https://tudog.bitibiti.com)
 
 ![preview](preview.png)
+![preview-dark](preview-dark.png)
 
-## 打钱名片
 
-![我的名片](tudog.png)
+## 打钱交友名片
+
+<img src="tudog.png" alt="我的名片" width="400">
+<br />
+<img src="tudog-dark.png" alt="我的名片dark" width="400">
 
 ## 🛠️ 技术栈
 

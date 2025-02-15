@@ -49,8 +49,8 @@
         }
         
         .container {
-            display: grid;
-            grid-template-columns: 1fr 300px;
+            display: flex;
+            flex-direction: row;
             gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
@@ -525,6 +525,115 @@
             border-color: #39FF14 !important;
             color: #39FF14 !important;
             text-shadow: 0 0 5px #39FF14 !important;
+        }
+        
+        /* 响应式布局 */
+        @media screen and (max-width: 767px) {
+            /* 平板端 */
+            .container {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+            
+            .card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .settings-panel {
+                width: 100%;
+            }
+            
+            .page {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            /* 移动端 */
+            body {
+                font-size: 14px;
+            }
+
+            .page {
+                padding: 20px 0;
+            }
+            
+            .card {
+                width: 100%;
+                padding: 5px;
+            }
+            
+            .avatar {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .info {
+                font-size: 10px;
+            }
+            
+            .settings-section {
+                padding: 10px;
+            }
+            
+            .input-group {
+                margin-bottom: 8px;
+            }
+            
+            .theme-switch {
+                top: 10px;
+                right: 10px;
+                font-size: 12px;
+                padding: 3px 8px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+                margin-top: 40px;
+            }
+            
+            .export-buttons {
+                margin-top: 20px;
+            }
+            
+            .export-button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+            
+            .skill-title {
+                font-size: 16px;
+            }
+            
+            .skill-item {
+                font-size: 12px;
+            }
+            
+            .business-watermark {
+                font-size: 36px;
+            }
+            
+            .qr-code {
+                width: 120px !important;
+                height: 120px !important;
+            }
+        }
+        
+        /* 优化滚动条 */
+        @media screen and (max-width: 767px) {
+            body {
+                overflow: auto;
+            }
+            
+            .card-container,
+            .settings-panel {
+                height: auto;
+                overflow: visible;
+            }
         }
     </style>
 </head>
